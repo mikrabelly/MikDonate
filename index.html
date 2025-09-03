@@ -11,6 +11,11 @@
     button { margin: 10px; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
     .gopay { background-color: #00a9ff; color: white; }
     .dana { background-color: #0085ff; color: white; }
+    .notification { position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; padding: 10px 15px; border-radius: 8px; display: none; }
+    .qr-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
+    .qr-box { background: white; padding: 20px; border-radius: 12px; text-align: center; }
+    .qr-box img { width: 200px; height: 200px; margin-bottom: 10px; }
+    .close-btn { background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; }
   </style>
 </head>
 <body>
@@ -21,13 +26,49 @@
     <button class="dana" onclick="donate('dana')">Donasi via Dana</button>
   </div>
 
+  <div class="notification" id="notification"></div>
+
+  <div class="qr-popup" id="qrPopup">
+    <div class="qr-box">
+      <img id="qrImage" src="" alt="QR Code">
+      <p id="qrText"></p>
+      <button class="close-btn" onclick="closeQR()">Tutup</button>
+    </div>
+  </div>
+
   <script>
     const gopayNumber = "082148930950";
     const danaNumber = "082148930950";
 
     function donate(method) {
       let number = method === "gopay" ? gopayNumber : danaNumber;
-      alert("Nomor " + method.toUpperCase() + ": " + number + "\nSilakan salin dan kirim donasi Anda.");
+      
+      // Copy number ke clipboard
+      navigator.clipboard.writeText(number).then(() => {
+        showNotification("Nomor " + method.toUpperCase() + " berhasil disalin ✅");
+      });
+
+      // Tampilkan QR Code (menggunakan API gratis)
+      let qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + number;
+      document.getElementById("qrImage").src = qrUrl;
+      document.getElementById("qrText").innerText = "Scan untuk donasi ke " + method.toUpperCase() + ": " + number;
+      document.getElementById("qrPopup").style.display = "flex";
+
+      // Simulasi notifikasi "donasi diterima"
+      setTimeout(() => {
+        showNotification("🎉 Terima kasih sudah berdonasi melalui " + method.toUpperCase() + "!");
+      }, 2000);
+    }
+
+    function showNotification(message) {
+      let notif = document.getElementById("notification");
+      notif.innerText = message;
+      notif.style.display = "block";
+      setTimeout(() => notif.style.display = "none", 3000);
+    }
+
+    function closeQR() {
+      document.getElementById("qrPopup").style.display = "none";
     }
   </script>
 </body>
