@@ -5,25 +5,51 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>MikDonate - Donasi</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; background: #f5f5f5; margin: 0; padding: 0; }
-    .container { max-width: 500px; margin: 50px auto; background: white; padding: 20px; border-radius: 15px; box-shadow: 0 0 10px rgba(0,0,0,0.1); }
-    h1 { color: #333; }
-    button { margin: 10px; padding: 12px 20px; border: none; border-radius: 8px; cursor: pointer; font-size: 16px; }
-    .gopay { background-color: #00a9ff; color: white; }
-    .dana { background-color: #0085ff; color: white; }
-    .notification { position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; padding: 10px 15px; border-radius: 8px; display: none; }
-    .qr-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; }
-    .qr-box { background: white; padding: 20px; border-radius: 12px; text-align: center; }
-    .qr-box img { width: 200px; height: 200px; margin-bottom: 10px; }
-    .close-btn { background: red; color: white; padding: 5px 10px; border: none; border-radius: 5px; cursor: pointer; }
+    body { font-family: Arial, sans-serif; text-align: center; background: #f0f2f5; margin: 0; padding: 0; }
+    .container { max-width: 500px; margin: 50px auto; background: white; padding: 25px; border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
+    h1 { color: #222; margin-bottom: 10px; }
+    p { color: #555; font-size: 15px; margin: 5px 0 15px; }
+    button { display: flex; align-items: center; justify-content: center; gap: 10px;
+             margin: 10px auto; padding: 14px 20px; border: none; border-radius: 10px; 
+             cursor: pointer; font-size: 16px; font-weight: bold; width: 80%; 
+             transition: transform 0.2s ease, box-shadow 0.2s ease; }
+    button:hover { transform: scale(1.03); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
+    .gopay { background-color: #00BCD4; color: white; }
+    .dana { background-color: #0D6EFD; color: white; }
+    .note { font-size: 13px; color: #777; margin-top: -5px; margin-bottom: 15px; }
+    .notification { position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; padding: 10px 15px; border-radius: 8px; display: none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
+    .qr-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
+    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .qr-box { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transform: scale(0.8); animation: zoomIn 0.3s forwards; }
+    @keyframes zoomIn { to { transform: scale(1); } }
+    .qr-box img { width: 220px; height: 220px; margin-bottom: 10px; border-radius: 12px; }
+    .close-btn { background: red; color: white; padding: 7px 14px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
+    .discord-link { display: flex; justify-content: center; margin-top: 20px; }
+    .discord-link img { width: 40px; transition: transform 0.2s ease; cursor: pointer; }
+    .discord-link img:hover { transform: scale(1.1); }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>💙 Dukung Karyaku</h1>
+    <h1>💙 Dukung Kreatorku</h1>
     <p>Silakan pilih metode donasi:</p>
-    <button class="gopay" onclick="donate('gopay')">Donasi via GoPay</button>
-    <button class="dana" onclick="donate('dana')">Donasi via Dana</button>
+    <button class="gopay" onclick="donate('gopay')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/GoPay_logo.svg" alt="GoPay" width="24">
+      Donasi via GoPay
+    </button>
+    <div class="note">Klik untuk salin nomor & tampilkan QR</div>
+
+    <button class="dana" onclick="donate('dana')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="Dana" width="24">
+      Donasi via Dana
+    </button>
+    <div class="note">Klik untuk salin nomor & tampilkan QR</div>
+
+    <div class="discord-link">
+      <a href="https://discord.gg/kU9PKgJcTK" target="_blank">
+        <img src="https://cdn.worldvectorlogo.com/logos/discord-6.svg" alt="Join Discord">
+      </a>
+    </div>
   </div>
 
   <div class="notification" id="notification"></div>
@@ -48,16 +74,11 @@
         showNotification("Nomor " + method.toUpperCase() + " berhasil disalin ✅");
       });
 
-      // Tampilkan QR Code (menggunakan API gratis)
-      let qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=" + number;
+      // Tampilkan QR Code
+      let qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + number;
       document.getElementById("qrImage").src = qrUrl;
-      document.getElementById("qrText").innerText = "Scan untuk donasi ke " + method.toUpperCase() + ": " + number;
+      document.getElementById("qrText").innerText = "Scan untuk donasi ke " + method.toUpperCase();
       document.getElementById("qrPopup").style.display = "flex";
-
-      // Simulasi notifikasi "donasi diterima"
-      setTimeout(() => {
-        showNotification("🎉 Terima kasih sudah berdonasi melalui " + method.toUpperCase() + "!");
-      }, 2000);
     }
 
     function showNotification(message) {
