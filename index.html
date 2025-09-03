@@ -3,89 +3,180 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>MikDonate - Donasi</title>
+  <title>Dukung Kreatorku</title>
   <style>
-    body { font-family: Arial, sans-serif; text-align: center; background: #f0f2f5; margin: 0; padding: 0; }
-    .container { max-width: 500px; margin: 50px auto; background: white; padding: 25px; border-radius: 18px; box-shadow: 0 4px 20px rgba(0,0,0,0.1); }
-    h1 { color: #222; margin-bottom: 10px; }
-    p { color: #555; font-size: 15px; margin: 5px 0 15px; }
-    button { display: flex; align-items: center; justify-content: center; gap: 10px;
-             margin: 10px auto; padding: 14px 20px; border: none; border-radius: 10px; 
-             cursor: pointer; font-size: 16px; font-weight: bold; width: 80%; 
-             transition: transform 0.2s ease, box-shadow 0.2s ease; }
-    button:hover { transform: scale(1.03); box-shadow: 0 4px 10px rgba(0,0,0,0.2); }
-    .gopay { background-color: #00BCD4; color: white; }
-    .dana { background-color: #0D6EFD; color: white; }
-    .note { font-size: 13px; color: #777; margin-top: -5px; margin-bottom: 15px; }
-    .notification { position: fixed; top: 20px; right: 20px; background: #4caf50; color: white; padding: 10px 15px; border-radius: 8px; display: none; box-shadow: 0 2px 10px rgba(0,0,0,0.2); }
-    .qr-popup { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); justify-content: center; align-items: center; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-    .qr-box { background: white; padding: 20px; border-radius: 15px; text-align: center; box-shadow: 0 4px 20px rgba(0,0,0,0.3); transform: scale(0.8); animation: zoomIn 0.3s forwards; }
-    @keyframes zoomIn { to { transform: scale(1); } }
-    .qr-box img { width: 220px; height: 220px; margin-bottom: 10px; border-radius: 12px; }
-    .close-btn { background: red; color: white; padding: 7px 14px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; }
-    .discord-link { display: flex; justify-content: center; margin-top: 20px; }
-    .discord-link img { width: 40px; transition: transform 0.2s ease; cursor: pointer; }
-    .discord-link img:hover { transform: scale(1.1); }
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      background: #f1f1f1;
+      margin: 0;
+      padding: 0;
+    }
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+      background: #fff;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+    }
+    h1 {
+      font-size: 24px;
+      margin-bottom: 10px;
+    }
+    .donate-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      margin: 10px 0;
+      padding: 12px;
+      color: white;
+      border: none;
+      border-radius: 12px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s;
+      animation: pulse 2s infinite;
+    }
+    .donate-btn:hover {
+      transform: scale(1.05);
+    }
+    @keyframes pulse {
+      0% { transform: scale(1); box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+      50% { transform: scale(1.05); box-shadow: 0 0 15px rgba(0,0,0,0.3); }
+      100% { transform: scale(1); box-shadow: 0 0 5px rgba(0,0,0,0.2); }
+    }
+    .gopay-btn { background-color: #00a896; }
+    .dana-btn { background-color: #0066ff; }
+    .small-text {
+      font-size: 12px;
+      color: #555;
+      margin-bottom: 10px;
+    }
+    .qr-popup {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      justify-content: center;
+      align-items: center;
+      animation: fadeIn 0.3s ease forwards;
+    }
+    .qr-popup-content {
+      background: white;
+      padding: 20px;
+      border-radius: 20px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+      animation: zoomIn 0.3s ease forwards;
+    }
+    .qr-popup img {
+      max-width: 250px;
+      border-radius: 15px;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    @keyframes zoomIn {
+      from { transform: scale(0.8); opacity: 0; }
+      to { transform: scale(1); opacity: 1; }
+    }
+    .discord-link img {
+      width: 40px;
+      margin-top: 15px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .discord-link img:hover {
+      transform: scale(1.1);
+    }
+    .owner {
+      font-size: 14px;
+      margin-top: 15px;
+    }
+    .neon-text {
+      font-weight: bold;
+      font-size: 16px;
+      background: linear-gradient(270deg, #ff0000, #ff8c00, #ffff00, #00ff00, #00ffff, #0000ff, #ff00ff);
+      background-size: 400% 400%;
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      animation: neonGlow 5s ease infinite, colorShift 6s linear infinite;
+      text-shadow: 0 0 8px rgba(255, 255, 255, 0.8);
+    }
+    @keyframes neonGlow {
+      0%, 100% { text-shadow: 0 0 8px rgba(255, 255, 255, 0.9), 0 0 16px rgba(255, 255, 255, 0.5); }
+      50% { text-shadow: 0 0 15px rgba(255, 255, 255, 1), 0 0 25px rgba(255, 255, 255, 0.7); }
+    }
+    @keyframes colorShift {
+      0% { background-position: 0% 50%; }
+      50% { background-position: 100% 50%; }
+      100% { background-position: 0% 50%; }
+    }
   </style>
 </head>
 <body>
   <div class="container">
-    <h1>💙 Dukung Kreatorku</h1>
+    <h1>ðŸ’™ Dukung Kreatorku</h1>
     <p>Silakan pilih metode donasi:</p>
-    <button class="gopay" onclick="donate('gopay')">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/3/3b/GoPay_logo.svg" alt="GoPay" width="24">
+
+    <button class="donate-btn gopay-btn" onclick="playSound(); showQR('gopay')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/2/28/GoPay_logo.svg" alt="GoPay" width="24">
       Donasi via GoPay
     </button>
-    <div class="note">Klik untuk salin nomor & tampilkan QR</div>
+    <p class="small-text">Klik untuk salin nomor & tampilkan QR</p>
 
-    <button class="dana" onclick="donate('dana')">
-      <img src="https://upload.wikimedia.org/wikipedia/commons/7/72/Logo_dana_blue.svg" alt="Dana" width="24">
+    <button class="donate-btn dana-btn" onclick="playSound(); showQR('dana')">
+      <img src="https://upload.wikimedia.org/wikipedia/commons/0/0a/Logo_dana_blue.svg" alt="Dana" width="24">
       Donasi via Dana
     </button>
-    <div class="note">Klik untuk salin nomor & tampilkan QR</div>
+    <p class="small-text">Klik untuk salin nomor & tampilkan QR</p>
+
+    <div class="owner">ðŸ‘¤ Pemilik: <span class="neon-text">MIKRAB ELY</span></div>
 
     <div class="discord-link">
       <a href="https://discord.gg/kU9PKgJcTK" target="_blank">
-        <img src="https://cdn.worldvectorlogo.com/logos/discord-6.svg" alt="Join Discord">
+        <img src="https://upload.wikimedia.org/wikipedia/commons/9/98/Discord_logo.svg" alt="Discord">
       </a>
     </div>
   </div>
 
-  <div class="notification" id="notification"></div>
-
-  <div class="qr-popup" id="qrPopup">
-    <div class="qr-box">
+  <div class="qr-popup" id="qrPopup" onclick="closeQR()">
+    <div class="qr-popup-content" onclick="event.stopPropagation()">
       <img id="qrImage" src="" alt="QR Code">
-      <p id="qrText"></p>
-      <button class="close-btn" onclick="closeQR()">Tutup</button>
+      <p id="copyText" style="font-weight: bold; margin-top: 10px;"></p>
     </div>
   </div>
+
+  <audio id="clickSound" src="https://www.soundjay.com/buttons/sounds/button-16.mp3" preload="auto"></audio>
 
   <script>
     const gopayNumber = "082148930950";
     const danaNumber = "082148930950";
 
-    function donate(method) {
-      let number = method === "gopay" ? gopayNumber : danaNumber;
-      
-      // Copy number ke clipboard
-      navigator.clipboard.writeText(number).then(() => {
-        showNotification("Nomor " + method.toUpperCase() + " berhasil disalin ✅");
-      });
-
-      // Tampilkan QR Code
-      let qrUrl = "https://api.qrserver.com/v1/create-qr-code/?size=220x220&data=" + number;
-      document.getElementById("qrImage").src = qrUrl;
-      document.getElementById("qrText").innerText = "Scan untuk donasi ke " + method.toUpperCase();
-      document.getElementById("qrPopup").style.display = "flex";
+    function playSound() {
+      document.getElementById("clickSound").play();
     }
 
-    function showNotification(message) {
-      let notif = document.getElementById("notification");
-      notif.innerText = message;
-      notif.style.display = "block";
-      setTimeout(() => notif.style.display = "none", 3000);
+    function showQR(type) {
+      let qrImage = document.getElementById("qrImage");
+      let copyText = document.getElementById("copyText");
+      if (type === "gopay") {
+        qrImage.src = "gopay-qr.jpg";
+        copyText.innerText = "Nomor GoPay disalin: " + gopayNumber;
+        navigator.clipboard.writeText(gopayNumber);
+      } else {
+        qrImage.src = "dana-qr.jpg";
+        copyText.innerText = "Nomor Dana disalin: " + danaNumber;
+        navigator.clipboard.writeText(danaNumber);
+      }
+      document.getElementById("qrPopup").style.display = "flex";
     }
 
     function closeQR() {
